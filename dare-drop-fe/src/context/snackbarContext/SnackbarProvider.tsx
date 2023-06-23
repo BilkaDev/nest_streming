@@ -3,12 +3,17 @@ import { Alert, Snackbar } from '@mui/material';
 
 import { SnackbarProviderProps } from './Snackbar.types';
 import { SnackbarContext } from './SnackbarContext';
+import { AlertColor } from '@mui/material/Alert/Alert';
 
 export const SnackbarProvider = ({ children }: SnackbarProviderProps) => {
   const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState<AlertColor>('success');
 
   const showSnackbar = useCallback(
-    (notification: string) => setMessage(notification),
+    (notification: string, status: AlertColor) => {
+      setMessage(notification);
+      setSeverity(status);
+    },
     []
   );
 
@@ -26,7 +31,7 @@ export const SnackbarProvider = ({ children }: SnackbarProviderProps) => {
         autoHideDuration={6000}
         onClose={() => setMessage('')}
       >
-        <Alert severity="success">{message}</Alert>
+        <Alert severity={severity}>{message}</Alert>
       </Snackbar>
     </SnackbarContext.Provider>
   );

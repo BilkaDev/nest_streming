@@ -4,13 +4,14 @@ import { Routes, Route } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
 import './App.css';
 import { AppRoute } from './AppRoute';
+import { Streamers } from './views/streamers/Streamers';
 
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route element={<Layout />}>
-          <Route path={AppRoute.streamer} element={<div>Streamer</div>} />
+          <Route path={AppRoute.streamer} element={<Streamers />} />
         </Route>
       </Routes>
     </div>
