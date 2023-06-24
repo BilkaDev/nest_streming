@@ -1,8 +1,7 @@
 import { Styles } from '../../../theme/theme';
 
 export const container: Styles = {
-  paddingX: 5,
-  minWidth: '20rem'
+  flex: 1
 };
 export const title: Styles = {
   display: 'flex',

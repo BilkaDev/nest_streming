@@ -21,7 +21,6 @@ import {
   availablePlatforms,
   DEFAULT_PLATFORM
 } from '../../../platforms';
-import * as styles from './AddStreamer.styles';
 import { useSnackbar } from '../../../context/snackbarContext/useSnackbar';
 import {
   addStreamerSchema,
@@ -29,6 +28,8 @@ import {
 } from '../../../api/request/streamers';
 import { createStreamer } from '../../../api/request/streamers/streamers.request';
 import { useParseError } from '../../../api/error/http-error';
+
+import * as styles from './AddStreamer.styles';
 
 export const AddStreamer = () => {
   const [showForm, setShowForm] = useState(false);
@@ -39,6 +40,7 @@ export const AddStreamer = () => {
   const errorParser = useParseError();
 
   const { mutate } = useMutation({
+    mutationKey: ['streamer'],
     mutationFn: createStreamer,
     onSettled: () => queryClient.invalidateQueries(['streamer']),
     onSuccess: () => showSnackbar('Streamer has been added!', 'success'),

@@ -2,7 +2,6 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import { Layout } from './components/layout/Layout';
-import './App.css';
 import { AppRoute } from './AppRoute';
 import { Streamers } from './views/streamers/Streamers';
 

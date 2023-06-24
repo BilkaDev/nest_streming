@@ -1,14 +1,30 @@
 import { Box, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+
+import { getAllStreamers } from '../../api/request/streamers/streamers.request';
+import { AxiosResponse } from 'axios';
+import { StreamerResponse } from '../../api/request/streamers';
+import { TableStreamers } from '../../components/tableStreamers/TableStreamers';
 
 import { AddStreamer } from './addStreamer/AddStreamer';
 import * as styles from './Streamers.styles';
 
 export const Streamers = () => {
+  const state = useQuery<AxiosResponse<StreamerResponse>>({
+    queryKey: ['streamer'],
+    queryFn: getAllStreamers
+  });
+
+  const data = state?.data?.data ?? [];
+
   return (
     <Box sx={styles.container}>
       <AddStreamer />
-      <Box>
-        <Typography variant="h5">List streamers</Typography>
+      <Box sx={styles.tableContainer}>
+        <Typography sx={styles.tableHeader} variant="h5">
+          List streamers
+        </Typography>
+        <TableStreamers data={data} />
       </Box>
     </Box>
   );

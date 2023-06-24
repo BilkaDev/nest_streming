@@ -10,5 +10,6 @@ export const outerContainer: Styles = {
 export const contentWrapper: Styles = {
   flexGrow: 1,
   paddingTop: `${topBarHeight}px`,
-  paddingRight: 3
+  paddingRight: 3,
+  paddingLeft: 3
 };

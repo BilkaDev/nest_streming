@@ -20,3 +20,8 @@ export type StreamerResponse = Streamer[];
 export type AddStreamerType = z.infer<typeof addStreamerSchema> & {
   platform: string;
 };
+
+export type UpdateVotesStreamerType = {
+  type: keyof Pick<Streamer, 'upvotes' | 'downvotes'>;
+  id: string;
+};
