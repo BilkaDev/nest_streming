@@ -14,45 +14,32 @@ import {
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import {
   AvailablePlatforms,
   availablePlatforms,
   DEFAULT_PLATFORM
 } from '../../../platforms';
-import { useSnackbar } from '../../../context/snackbarContext/useSnackbar';
 import {
   addStreamerSchema,
   AddStreamerType
 } from '../../../api/request/streamers';
-import { createStreamer } from '../../../api/request/streamers/streamers.request';
-import { useParseError } from '../../../api/error/http-error';
 
 import * as styles from './AddStreamer.styles';
+import { useMutationStreamer } from '../../../api/request/streamers/hooks/useMutationStreamer';
 
 export const AddStreamer = () => {
   const [showForm, setShowForm] = useState(false);
   const [platform, setPlatform] = useState(DEFAULT_PLATFORM);
+  const { addStreamerState } = useMutationStreamer();
 
-  const { showSnackbar } = useSnackbar();
-  const queryClient = useQueryClient();
-  const errorParser = useParseError();
-
-  const { mutate } = useMutation({
-    mutationKey: ['streamer'],
-    mutationFn: createStreamer,
-    onSettled: () => queryClient.invalidateQueries(['streamer']),
-    onSuccess: () => showSnackbar('Streamer has been added!', 'success'),
-    onError: error => showSnackbar(errorParser({ error }), 'error')
-  });
-
-  const handleChange = (event: SelectChangeEvent<string>) => {
+  const handleChange = (event: SelectChangeEvent) => {
     setPlatform(event.target.value);
   };
   const {
     formState: { errors },
     register,
+    reset,
     handleSubmit
   } = useForm<AddStreamerType>({
     resolver: zodResolver(addStreamerSchema)
@@ -63,6 +50,15 @@ export const AddStreamer = () => {
       {availablePlatforms[platform as AvailablePlatforms].name}
     </MenuItem>
   ));
+
+  const submitForm = async (data: AddStreamerType) => {
+    const payload = { ...data, platform };
+    await addStreamerState.mutate(payload);
+
+    if (addStreamerState.isSuccess) {
+      reset();
+    }
+  };
 
   return (
     <Box sx={styles.container}>
@@ -78,10 +74,7 @@ export const AddStreamer = () => {
           <Box
             component="form"
             sx={styles.form}
-            onSubmit={handleSubmit(data => {
-              const payload = { ...data, platform };
-              mutate(payload);
-            })}
+            onSubmit={handleSubmit(submitForm)}
           >
             <TextField
               variant="standard"

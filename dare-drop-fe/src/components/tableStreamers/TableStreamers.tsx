@@ -6,27 +6,13 @@ import {
   TableHead,
   TableRow
 } from '@mui/material';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-import { fetchUpdateVotesStreamer } from '../../api/request/streamers/streamers.request';
-import { useSnackbar } from '../../context/snackbarContext/useSnackbar';
-import { useParseError } from '../../api/error/http-error';
 
 import { TableStreamersType } from './TableStreamers.types';
 import { TableBodyStreamers } from './tableBodyStreamers/TableBodyStreamers';
+import { useMutationStreamer } from '../../api/request/streamers/hooks/useMutationStreamer';
 
 export const TableStreamers = ({ data }: TableStreamersType) => {
-  const queryClient = useQueryClient();
-  const { showSnackbar } = useSnackbar();
-  const errorParser = useParseError();
-
-  const { mutate } = useMutation({
-    mutationKey: ['streamer'],
-    mutationFn: fetchUpdateVotesStreamer,
-    onSettled: () => queryClient.invalidateQueries(['streamer']),
-    onSuccess: () => showSnackbar('Streamer has been update!', 'success'),
-    onError: error => showSnackbar(errorParser({ error }), 'error')
-  });
+  const { updateVoicesState } = useMutationStreamer();
 
   return (
     <Paper>
@@ -40,7 +26,11 @@ export const TableStreamers = ({ data }: TableStreamersType) => {
             </TableRow>
           </TableHead>
           {data.map(item => (
-            <TableBodyStreamers key={item.id} data={item} onMutate={mutate} />
+            <TableBodyStreamers
+              key={item.id}
+              data={item}
+              onMutate={updateVoicesState.mutate}
+            />
           ))}
         </Table>
       </TableContainer>
