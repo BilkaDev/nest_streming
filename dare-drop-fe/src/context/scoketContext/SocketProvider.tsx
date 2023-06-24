@@ -7,8 +7,7 @@ import { SocketContext } from './SocketContext';
 export const SocketProvider = ({ children }: SocketProviderProps) => {
   const [socket, setSocket] = useState<Socket>();
 
-  const URL = 'http://localhost:3001/streamer';
-  io(URL, { autoConnect: false });
+  const URL = `${process.env.REACT_APP_API_URL}/streamer`;
 
   useEffect(() => {
     const newSocket = io(URL, { autoConnect: false });

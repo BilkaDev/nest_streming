@@ -10,13 +10,13 @@ import { SocketProvider } from '../context/scoketContext/SocketProvider';
 const queryClient = new QueryClient();
 export const AppProviders = ({ children }: AppProvidersTypes) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <SocketProvider>
+    <SocketProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
           <CssBaseline />
           <SnackbarProvider>{children}</SnackbarProvider>
-        </SocketProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </SocketProvider>
   );
 };

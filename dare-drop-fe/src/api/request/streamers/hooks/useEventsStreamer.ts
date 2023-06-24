@@ -1,53 +1,43 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { AxiosResponse } from 'axios';
-import { useQueryClient } from '@tanstack/react-query';
 
 import { useSocket } from '../../../../context/scoketContext/useSocket.ts';
-import { Streamer, StreamersResponse } from '../index';
+import { useDataCache } from '../../../../hooks/useDataCache';
+import { QUERY_KEY_STREAMER, Streamer, StreamersResponse } from '../index';
 
 export const useEventsStreamer = () => {
-  const queryClient = useQueryClient();
-
-  const onUpdateVotes = useCallback(
-    (data: { streamer: Streamer }) => {
-      const dataCache = queryClient.getQueryData<
-        AxiosResponse<StreamersResponse>
-      >(['streamer']);
-      if (!dataCache) return;
-      const updateDataCache = dataCache.data.map(item =>
-        item.id === data.streamer.id ? data.streamer : item
-      );
-      queryClient.setQueryData(['streamer'], {
-        ...dataCache,
-        data: updateDataCache
-      });
-    },
-    [queryClient]
-  );
-
-  const onAddedStreamer = useCallback(
-    (data: { streamer: Streamer }) => {
-      const dataCache = queryClient.getQueryData<
-        AxiosResponse<StreamersResponse>
-      >(['streamer']);
-      if (!dataCache) return;
-      queryClient.setQueryData(['streamer'], {
-        ...dataCache,
-        data: [...dataCache.data, data.streamer]
-      });
-    },
-    [queryClient]
-  );
-
   const { socket } = useSocket();
-  useEffect(() => {
-    socket?.connect();
-    socket?.on('updateVotes', onUpdateVotes);
-    socket?.on('addedStreamer', onAddedStreamer);
-    return () => {
-      socket?.off('updateVotes');
-      socket?.off('addedStreamer');
-      socket?.disconnect();
-    };
-  }, [onAddedStreamer, onUpdateVotes]);
+  const { getDataCache, setDataCache } =
+    useDataCache<AxiosResponse<StreamersResponse>>(QUERY_KEY_STREAMER);
+
+  const onUpdateVotes = useCallback((data: { streamer: Streamer }) => {
+    const dataCache = getDataCache();
+    if (!dataCache) return;
+    const updateDataCache = dataCache.data.map(item =>
+      item.id === data.streamer.id ? data.streamer : item
+    );
+    setDataCache({
+      ...dataCache,
+      data: updateDataCache
+    });
+  }, []);
+
+  const onAddedStreamer = useCallback((data: { streamer: Streamer }) => {
+    const dataCache = getDataCache();
+    if (!dataCache) return;
+    setDataCache({
+      ...dataCache,
+      data: [...dataCache.data, data.streamer]
+    });
+  }, []);
+
+  if (socket === undefined) return;
+  socket.connect();
+  socket.on('updateVotes', onUpdateVotes);
+  socket.on('addedStreamer', onAddedStreamer);
+  return () => {
+    socket.off('updateVotes');
+    socket.off('addedStreamer');
+    socket.disconnect();
+  };
 };

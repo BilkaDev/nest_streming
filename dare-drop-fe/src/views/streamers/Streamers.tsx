@@ -3,7 +3,10 @@ import { Box, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
 import { fetchGetAllStreamers } from '../../api/request/streamers/streamers.request';
-import { StreamersResponse } from '../../api/request/streamers';
+import {
+  QUERY_KEY_STREAMER,
+  StreamersResponse
+} from '../../api/request/streamers';
 import { TableStreamers } from '../../components/tableStreamers/TableStreamers';
 import { useEventsStreamer } from '../../api/request/streamers/hooks/useEventsStreamer';
 
@@ -12,7 +15,7 @@ import * as styles from './Streamers.styles';
 
 export const Streamers = () => {
   const state = useQuery<AxiosResponse<StreamersResponse>>({
-    queryKey: ['streamer'],
+    queryKey: QUERY_KEY_STREAMER,
     queryFn: fetchGetAllStreamers,
     cacheTime: 5 * 60 * 1000,
     refetchInterval: 5 * 60 * 1000
