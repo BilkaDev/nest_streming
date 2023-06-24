@@ -1,5 +1,13 @@
-import { Length } from 'class-validator';
-import { CreateStreamerDtoType } from '../streamer.types';
+import { IsIn, Length } from 'class-validator';
+import { AvailablePlatforms, CreateStreamerDtoType } from '../streamer.types';
+
+const validationPlatform: AvailablePlatforms[] = [
+  'kick',
+  'twitch',
+  'rubmle',
+  'tiktok',
+  'youtube'
+];
 
 export class CreateStreamerDto implements CreateStreamerDtoType {
   @Length(5, 500)
@@ -7,5 +15,6 @@ export class CreateStreamerDto implements CreateStreamerDtoType {
   @Length(2, 100)
   name: string;
   @Length(2, 100)
-  platform: string;
+  @IsIn(validationPlatform)
+  platform: AvailablePlatforms;
 }

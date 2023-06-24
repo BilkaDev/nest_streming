@@ -18,7 +18,7 @@ export type Streamer = {
 export type StreamersResponse = Streamer[];
 
 export type AddStreamerType = z.infer<typeof addStreamerSchema> & {
-  platform: string;
+  platform: AvailablePlatforms;
 };
 
 export type UpdateVotesStreamerType = {

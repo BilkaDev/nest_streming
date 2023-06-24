@@ -1,5 +1,12 @@
 import { Streamer } from './model/streamer.entity';
 
+export type AvailablePlatforms =
+  | 'twitch'
+  | 'tiktok'
+  | 'kick'
+  | 'youtube'
+  | 'rubmle';
+
 // DTO types
 export type CreateStreamerDtoType = Omit<
   Streamer,

@@ -5,6 +5,7 @@ import {
   UpdateDateColumn,
   Column
 } from 'typeorm';
+import { AvailablePlatforms } from '../streamer.types';
 
 @Entity()
 export class Streamer {
@@ -21,7 +22,7 @@ export class Streamer {
   name: string;
 
   @Column({ type: 'varchar', length: 100 })
-  platform: string;
+  platform: AvailablePlatforms;
 
   @Column({ type: 'varchar', length: 500 })
   description: string;

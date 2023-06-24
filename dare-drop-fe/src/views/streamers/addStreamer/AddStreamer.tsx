@@ -30,11 +30,12 @@ import { useMutationStreamer } from '../../../api/request/streamers/hooks/useMut
 
 export const AddStreamer = () => {
   const [showForm, setShowForm] = useState(false);
-  const [platform, setPlatform] = useState(DEFAULT_PLATFORM);
+  const [platform, setPlatform] =
+    useState<AvailablePlatforms>(DEFAULT_PLATFORM);
   const { addStreamerState } = useMutationStreamer();
 
   const handleChange = (event: SelectChangeEvent) => {
-    setPlatform(event.target.value);
+    setPlatform(event.target.value as AvailablePlatforms);
   };
   const {
     formState: { errors },

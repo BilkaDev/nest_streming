@@ -22,9 +22,9 @@ export const useMutationStreamer = () => {
   });
 
   const updateVoicesState = useMutation({
-    mutationKey: ['streamer'],
+    mutationKey: QUERY_KEY_STREAMER,
     mutationFn: fetchUpdateVotesStreamer,
-    onSettled: () => queryClient.invalidateQueries(['streamer']),
+    onSettled: () => queryClient.invalidateQueries(QUERY_KEY_STREAMER),
     onSuccess: () => showSnackbar('Streamer has been update!', 'success'),
     onError: error => showSnackbar(errorParser({ error }), 'error')
   });
