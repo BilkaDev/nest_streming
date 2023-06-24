@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 
@@ -6,11 +6,14 @@ import { Streamer } from './model/streamer.entity';
 import { CreateStreamerDto } from './dto/create-streamer-dto';
 import { UpdateVotesStreamerDto } from './dto/update-streamer-dto';
 import { UpdateVotesStreamerType } from './streamer.types';
+import { StreamerGateway } from './streamer.gateway';
 
 @Injectable()
 export class StreamerService {
   constructor(
-    @InjectRepository(Streamer) private streamerRepository: Repository<Streamer>
+    @InjectRepository(Streamer)
+    private streamerRepository: Repository<Streamer>,
+    @Inject(StreamerGateway) private streamGateway: StreamerGateway
   ) {}
 
   async findBy(findBy: Pick<FindOptionsWhere<Streamer>, 'id'>) {
@@ -40,6 +43,8 @@ export class StreamerService {
     );
 
     const streamer = await this.streamerRepository.save(createdStreamer);
+    this.streamGateway.emitAddedStreamer(streamer);
+
     return streamer;
   }
 
@@ -56,6 +61,7 @@ export class StreamerService {
     const streamerAfterUpdate = await this.streamerRepository.save(
       streamerToBeUpdate
     );
+    this.streamGateway.emitVotes(streamerAfterUpdate);
 
     return streamerAfterUpdate;
   }

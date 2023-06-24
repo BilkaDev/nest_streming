@@ -1,10 +1,11 @@
+import { AxiosResponse } from 'axios';
 import { Box, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
 import { getAllStreamers } from '../../api/request/streamers/streamers.request';
-import { AxiosResponse } from 'axios';
 import { StreamerResponse } from '../../api/request/streamers';
 import { TableStreamers } from '../../components/tableStreamers/TableStreamers';
+import { useEventsStreamer } from '../../hooks/useEventsStreamer';
 
 import { AddStreamer } from './addStreamer/AddStreamer';
 import * as styles from './Streamers.styles';
@@ -14,6 +15,7 @@ export const Streamers = () => {
     queryKey: ['streamer'],
     queryFn: getAllStreamers
   });
+  useEventsStreamer();
 
   const data = state?.data?.data ?? [];
 
