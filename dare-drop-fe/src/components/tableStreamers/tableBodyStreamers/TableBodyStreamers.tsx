@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Box,
-  IconButton,
-  TableBody,
-  TableCell,
-  TableRow
-} from '@mui/material';
+import { Avatar, Box, IconButton, TableCell, TableRow } from '@mui/material';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import { Link } from 'react-router-dom';
@@ -21,44 +14,42 @@ export const TableBodyStreamers = ({
   onMutate
 }: TableBodyStreamersType) => {
   return (
-    <TableBody>
-      <TableRow>
-        <TableCell>
-          <Box
-            to={getSingleStreamerUrl(data.id)}
-            sx={mergeSx(styles.center, styles.link)}
-            component={Link}
+    <TableRow>
+      <TableCell>
+        <Box
+          to={getSingleStreamerUrl(data.id)}
+          sx={mergeSx(styles.center, styles.link)}
+          component={Link}
+        >
+          <Avatar
+            alt={'avatar image'}
+            src={'https://xsgames.co/randomusers/avatar.php?g=male'}
+          />
+          {data.name}
+        </Box>
+      </TableCell>
+      <TableCell>
+        <Box sx={styles.center}>
+          <IconButton
+            arial-label="upvotes"
+            onClick={() => onMutate({ type: 'upvotes', id: data.id })}
           >
-            <Avatar
-              alt={'avatar image'}
-              src={'https://xsgames.co/randomusers/avatar.php?g=male'}
-            />
-            {data.name}
-          </Box>
-        </TableCell>
-        <TableCell>
-          <Box sx={styles.center}>
-            <IconButton
-              arial-label="upvotes"
-              onClick={() => onMutate({ type: 'upvotes', id: data.id })}
-            >
-              <ThumbUpOffAltIcon />
-            </IconButton>
-            {data.upvotes}
-          </Box>
-        </TableCell>
-        <TableCell>
-          <Box sx={styles.center}>
-            <IconButton
-              arial-label="downvotes"
-              onClick={() => onMutate({ type: 'downvotes', id: data.id })}
-            >
-              <ThumbDownOffAltIcon />
-            </IconButton>
-            {data.downvotes}
-          </Box>
-        </TableCell>
-      </TableRow>
-    </TableBody>
+            <ThumbUpOffAltIcon />
+          </IconButton>
+          {data.upvotes}
+        </Box>
+      </TableCell>
+      <TableCell>
+        <Box sx={styles.center}>
+          <IconButton
+            arial-label="downvotes"
+            onClick={() => onMutate({ type: 'downvotes', id: data.id })}
+          >
+            <ThumbDownOffAltIcon />
+          </IconButton>
+          {data.downvotes}
+        </Box>
+      </TableCell>
+    </TableRow>
   );
 };

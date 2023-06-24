@@ -27,7 +27,7 @@ export const StreamerRecord = () => {
       showSnackbar('Not found streamer...', 'error');
       navigate(AppRoute.streamer);
     }
-  }, []);
+  }, [isFetched, navigate, showSnackbar, streamer]);
 
   if (!streamer) return null;
   return (

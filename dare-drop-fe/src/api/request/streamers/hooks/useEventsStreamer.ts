@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { AxiosResponse } from 'axios';
 
-import { useSocket } from '../../../../context/scoketContext/useSocket.ts';
+import { useSocket } from '../../../../context/socketContext/useSocket.ts';
 import { useDataCache } from '../../../../hooks/useDataCache';
 import { QUERY_KEY_STREAMER, Streamer, StreamersResponse } from '../index';
 
@@ -10,26 +10,32 @@ export const useEventsStreamer = () => {
   const { getDataCache, setDataCache } =
     useDataCache<AxiosResponse<StreamersResponse>>(QUERY_KEY_STREAMER);
 
-  const onUpdateVotes = useCallback((data: { streamer: Streamer }) => {
-    const dataCache = getDataCache();
-    if (!dataCache) return;
-    const updateDataCache = dataCache.data.map(item =>
-      item.id === data.streamer.id ? data.streamer : item
-    );
-    setDataCache({
-      ...dataCache,
-      data: updateDataCache
-    });
-  }, []);
+  const onUpdateVotes = useCallback(
+    (data: { streamer: Streamer }) => {
+      const dataCache = getDataCache();
+      if (!dataCache) return;
+      const updateDataCache = dataCache.data.map(item =>
+        item.id === data.streamer.id ? data.streamer : item
+      );
+      setDataCache({
+        ...dataCache,
+        data: updateDataCache
+      });
+    },
+    [getDataCache, setDataCache]
+  );
 
-  const onAddedStreamer = useCallback((data: { streamer: Streamer }) => {
-    const dataCache = getDataCache();
-    if (!dataCache) return;
-    setDataCache({
-      ...dataCache,
-      data: [...dataCache.data, data.streamer]
-    });
-  }, []);
+  const onAddedStreamer = useCallback(
+    (data: { streamer: Streamer }) => {
+      const dataCache = getDataCache();
+      if (!dataCache) return;
+      setDataCache({
+        ...dataCache,
+        data: [...dataCache.data, data.streamer]
+      });
+    },
+    [getDataCache, setDataCache]
+  );
 
   if (socket === undefined) return;
   socket.connect();

@@ -1,19 +1,33 @@
+import { useMemo } from 'react';
 import {
   Paper,
   Table,
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
+  TableBody
 } from '@mui/material';
 
-import { TableStreamersType } from './TableStreamers.types';
 import { TableBodyStreamers } from './tableBodyStreamers/TableBodyStreamers';
 import { useMutationStreamer } from '../../api/request/streamers/hooks/useMutationStreamer';
+
+import { TableStreamersType } from './TableStreamers.types';
 
 export const TableStreamers = ({ data }: TableStreamersType) => {
   const { updateVoicesState } = useMutationStreamer();
 
+  const dataBody = useMemo(
+    () =>
+      data.map(item => (
+        <TableBodyStreamers
+          key={item.id}
+          data={item}
+          onMutate={updateVoicesState.mutate}
+        />
+      )),
+    [data, updateVoicesState.mutate]
+  );
   return (
     <Paper>
       <TableContainer>
@@ -25,13 +39,7 @@ export const TableStreamers = ({ data }: TableStreamersType) => {
               <TableCell>Down votes</TableCell>
             </TableRow>
           </TableHead>
-          {data.map(item => (
-            <TableBodyStreamers
-              key={item.id}
-              data={item}
-              onMutate={updateVoicesState.mutate}
-            />
-          ))}
+          <TableBody>{dataBody}</TableBody>
         </Table>
       </TableContainer>
     </Paper>

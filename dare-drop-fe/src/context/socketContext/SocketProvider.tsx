@@ -12,7 +12,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
   useEffect(() => {
     const newSocket = io(URL, { autoConnect: false });
     setSocket(newSocket);
-  }, []);
+  }, [URL]);
 
   const contextValue = useMemo(
     () => ({

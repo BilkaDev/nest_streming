@@ -5,7 +5,7 @@ import { SnackbarProvider } from '../context/snackbarContext/SnackbarProvider';
 import { theme } from '../theme/theme';
 
 import { AppProvidersTypes } from './AppProviders.types';
-import { SocketProvider } from '../context/scoketContext/SocketProvider';
+import { SocketProvider } from '../context/socketContext/SocketProvider';
 
 const queryClient = new QueryClient();
 export const AppProviders = ({ children }: AppProvidersTypes) => {
