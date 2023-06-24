@@ -1,3 +1,7 @@
+node v18.16.1
+nestjs v10.0.0
+npm 9.7.2
+
 how to run:
 
 BE:
