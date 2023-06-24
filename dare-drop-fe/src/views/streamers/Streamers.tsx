@@ -6,7 +6,6 @@ import { useStreamers } from '../../api/request/streamers/hooks/useStreamers';
 
 import { AddStreamer } from './addStreamer/AddStreamer';
 import * as styles from './Streamers.styles';
-import { useEffect } from 'react';
 
 export const Streamers = () => {
   const state = useStreamers();
