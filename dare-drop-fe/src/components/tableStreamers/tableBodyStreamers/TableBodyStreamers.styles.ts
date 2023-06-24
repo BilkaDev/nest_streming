@@ -1,4 +1,4 @@
-import { Styles } from '../../../theme/theme';
+import { Styles, theme } from '../../../theme/theme';
 
 export const center: Styles = {
   display: 'flex',
@@ -6,6 +6,7 @@ export const center: Styles = {
   gap: 1
 };
 
-export const pointer: Styles = {
-  cursor: 'pointer'
+export const link: Styles = {
+  textDecoration: 'none',
+  color: theme.palette.text.primary
 };

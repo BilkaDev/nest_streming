@@ -1,7 +1,14 @@
-import { Avatar, Box, TableBody, TableCell, TableRow } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  IconButton,
+  TableBody,
+  TableCell,
+  TableRow
+} from '@mui/material';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { mergeSx } from '../../../utils/mergeSx/mergeSx';
 import { getSingleStreamerUrl } from '../../../AppRoute';
@@ -13,14 +20,14 @@ export const TableBodyStreamers = ({
   data,
   onMutate
 }: TableBodyStreamersType) => {
-  const navigate = useNavigate();
   return (
     <TableBody>
       <TableRow>
         <TableCell>
           <Box
-            sx={mergeSx(styles.center, styles.pointer)}
-            onClick={() => navigate(getSingleStreamerUrl(data.id))}
+            to={getSingleStreamerUrl(data.id)}
+            sx={mergeSx(styles.center, styles.link)}
+            component={Link}
           >
             <Avatar
               alt={'avatar image'}
@@ -31,19 +38,23 @@ export const TableBodyStreamers = ({
         </TableCell>
         <TableCell>
           <Box sx={styles.center}>
-            <ThumbUpOffAltIcon
+            <IconButton
+              arial-label="upvotes"
               onClick={() => onMutate({ type: 'upvotes', id: data.id })}
-              sx={styles.pointer}
-            />{' '}
+            >
+              <ThumbUpOffAltIcon />
+            </IconButton>
             {data.upvotes}
           </Box>
         </TableCell>
         <TableCell>
           <Box sx={styles.center}>
-            <ThumbDownOffAltIcon
+            <IconButton
+              arial-label="downvotes"
               onClick={() => onMutate({ type: 'downvotes', id: data.id })}
-              sx={styles.pointer}
-            />
+            >
+              <ThumbDownOffAltIcon />
+            </IconButton>
             {data.downvotes}
           </Box>
         </TableCell>
