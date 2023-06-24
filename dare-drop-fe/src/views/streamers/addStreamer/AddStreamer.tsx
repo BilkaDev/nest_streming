@@ -54,11 +54,11 @@ export const AddStreamer = () => {
 
   const submitForm = async (data: AddStreamerType) => {
     const payload = { ...data, platform };
-    await addStreamerState.mutate(payload);
-
-    if (addStreamerState.isSuccess) {
-      reset();
-    }
+    await addStreamerState.mutate(payload, {
+      onSuccess: () => {
+        reset();
+      }
+    });
   };
 
   return (

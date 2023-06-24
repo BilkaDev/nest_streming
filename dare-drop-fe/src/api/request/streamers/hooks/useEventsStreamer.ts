@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
 
 import { useSocket } from '../../../../context/socketContext/useSocket.ts';
@@ -37,13 +37,14 @@ export const useEventsStreamer = () => {
     [getDataCache, setDataCache]
   );
 
-  if (socket === undefined) return;
-  socket.connect();
-  socket.on('updateVotes', onUpdateVotes);
-  socket.on('addedStreamer', onAddedStreamer);
-  return () => {
-    socket.off('updateVotes');
-    socket.off('addedStreamer');
-    socket.disconnect();
-  };
+  useEffect(() => {
+    socket?.connect();
+    socket?.on('updateVotes', onUpdateVotes);
+    socket?.on('addedStreamer', onAddedStreamer);
+    return () => {
+      socket?.off('updateVotes');
+      socket?.off('addedStreamer');
+      socket?.disconnect();
+    };
+  }, [onAddedStreamer, onUpdateVotes, socket]);
 };
