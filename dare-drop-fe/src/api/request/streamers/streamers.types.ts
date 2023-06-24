@@ -15,7 +15,7 @@ export type Streamer = {
   imageUrl: string;
 };
 
-export type StreamerResponse = Streamer[];
+export type StreamersResponse = Streamer[];
 
 export type AddStreamerType = z.infer<typeof addStreamerSchema> & {
   platform: string;

@@ -8,12 +8,10 @@ import {
   Typography
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
-import { StreamerResponse } from '../../../api/request/streamers';
 import { useSnackbar } from '../../../context/snackbarContext/useSnackbar';
+import { useStreamer } from '../../../api/request/streamers/hooks/useStreamer';
 import { AppRoute } from '../../../AppRoute';
 
 import * as styles from './StreamerRecord.styles';
@@ -22,22 +20,15 @@ export const StreamerRecord = () => {
   const { id: streamerId } = useParams();
   const { showSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  const { streamer, isFetched } = useStreamer(streamerId!);
 
-  const queryClient = useQueryClient();
-
-  const streamersDataCache = queryClient.getQueryData<
-    AxiosResponse<StreamerResponse>
-  >(['streamer']);
-
-  const streamer = streamersDataCache?.data.find(
-    item => item.id === streamerId
-  );
   useEffect(() => {
-    if (!streamer) {
+    if (!streamer && isFetched) {
       showSnackbar('Not found streamer...', 'error');
       navigate(AppRoute.streamer);
     }
   }, []);
+
   if (!streamer) return null;
   return (
     <Box>

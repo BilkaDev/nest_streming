@@ -2,20 +2,22 @@ import { AxiosResponse } from 'axios';
 import { Box, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
-import { getAllStreamers } from '../../api/request/streamers/streamers.request';
-import { StreamerResponse } from '../../api/request/streamers';
+import { fetchGetAllStreamers } from '../../api/request/streamers/streamers.request';
+import { StreamersResponse } from '../../api/request/streamers';
 import { TableStreamers } from '../../components/tableStreamers/TableStreamers';
-import { useEventsStreamer } from '../../hooks/useEventsStreamer';
+import { useEventsStreamer } from '../../api/request/streamers/hooks/useEventsStreamer';
 
 import { AddStreamer } from './addStreamer/AddStreamer';
 import * as styles from './Streamers.styles';
 
 export const Streamers = () => {
-  const state = useQuery<AxiosResponse<StreamerResponse>>({
+  const state = useQuery<AxiosResponse<StreamersResponse>>({
     queryKey: ['streamer'],
-    queryFn: getAllStreamers
+    queryFn: fetchGetAllStreamers,
+    cacheTime: 5 * 60 * 1000,
+    refetchInterval: 5 * 60 * 1000
   });
-  useEventsStreamer();
+  useEventsStreamer(); // connect to be with socket io
 
   const data = state?.data?.data ?? [];
 

@@ -1,9 +1,9 @@
-import { useSocket } from '../context/scoketContext/useSocket.ts';
 import { useCallback, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { Streamer, StreamerResponse } from '../api/request/streamers';
+import { useSocket } from '../../../../context/scoketContext/useSocket.ts';
+import { Streamer, StreamersResponse } from '../index';
 
 export const useEventsStreamer = () => {
   const queryClient = useQueryClient();
@@ -11,7 +11,7 @@ export const useEventsStreamer = () => {
   const onUpdateVotes = useCallback(
     (data: { streamer: Streamer }) => {
       const dataCache = queryClient.getQueryData<
-        AxiosResponse<StreamerResponse>
+        AxiosResponse<StreamersResponse>
       >(['streamer']);
       if (!dataCache) return;
       const updateDataCache = dataCache.data.map(item =>
@@ -28,7 +28,7 @@ export const useEventsStreamer = () => {
   const onAddedStreamer = useCallback(
     (data: { streamer: Streamer }) => {
       const dataCache = queryClient.getQueryData<
-        AxiosResponse<StreamerResponse>
+        AxiosResponse<StreamersResponse>
       >(['streamer']);
       if (!dataCache) return;
       queryClient.setQueryData(['streamer'], {

@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { updateVotesStreamer } from '../../api/request/streamers/streamers.request';
+import { fetchUpdateVotesStreamer } from '../../api/request/streamers/streamers.request';
 import { useSnackbar } from '../../context/snackbarContext/useSnackbar';
 import { useParseError } from '../../api/error/http-error';
 
@@ -22,7 +22,7 @@ export const TableStreamers = ({ data }: TableStreamersType) => {
 
   const { mutate } = useMutation({
     mutationKey: ['streamer'],
-    mutationFn: updateVotesStreamer,
+    mutationFn: fetchUpdateVotesStreamer,
     onSettled: () => queryClient.invalidateQueries(['streamer']),
     onSuccess: () => showSnackbar('Streamer has been update!', 'success'),
     onError: error => showSnackbar(errorParser({ error }), 'error')
